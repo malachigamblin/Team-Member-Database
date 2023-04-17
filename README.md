@@ -43,6 +43,10 @@ There are no tests at the time
 
 <img width="1002" alt="Screenshot 2023-04-17 at 12 02 15 PM" src="https://user-images.githubusercontent.com/118701306/232543973-9c8a9b8c-7a55-4c3a-ae6d-b86608c2b2ac.png">
 
+## Walkthrough Video
+
+https://drive.google.com/file/d/1YaUUYbyVMv9XJS57COZl_zyq9rGDmWc4/view?usp=sharing 
+
 ## Questions
 
 For questions about this project, please see my GitHub at [malachigamblin](https://github.com/malachigamblin/).
