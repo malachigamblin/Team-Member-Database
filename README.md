@@ -41,8 +41,7 @@ There are no tests at the time
 
 ## Screenshot
 
-<img width="1002" alt="Screenshot 2023-04-16 at 11 31 32 PM" src="https://user-images.githubusercontent.com/118701306/232371539-e35e6b4d-470c-4b73-a999-07a55a053f4e.png">
-
+<img width="1002" alt="Screenshot 2023-04-16 at 11 31 32 PM" src="https://user-images.githubusercontent.com/118701306/232372236-e6a922a7-de62-4468-b3dd-96bc4aa9e7b8.png">
 
 ## Questions
 
