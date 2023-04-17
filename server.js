@@ -3,7 +3,7 @@ const mysql = require("mysql2");
 const consoleTable = require("console.table");
 const db = mysql.createConnection(
   {
-    host: "127.0.0.1",
+    host: "localhost",
     user: "root",
     password: "root",
     database: "team_members_db",
@@ -111,7 +111,7 @@ function addDepartment() {
       {
         type: "input",
         name: "department",
-        message: "Please enter the name of the department that you want to add",
+        message: "Please enter the name of the department that you want to add:",
       },
     ])
     .then((answer) => {
