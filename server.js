@@ -1,10 +1,9 @@
-const mysql = require("mysql2");
 const inquirer = require("inquirer");
+const mysql = require("mysql2");
 const consoleTable = require("console.table");
-
-const db = mysql.Connection(
+const db = mysql.createConnection(
   {
-    host: "localhost",
+    host: "127.0.0.1",
     user: "root",
     password: "root",
     database: "team_members_db",
@@ -64,7 +63,7 @@ function introQuestion() {
           break;
         case "Exit":
           console.log("Good-Bye!");
-          db.exit();
+          db.end();
           break;
       }
     });
@@ -83,7 +82,7 @@ function viewAllDepartments() {
 }
 
 function viewAllRoles() {
-  const sql = `SELECT role.id, role.title AS role,role.salary, department.name AS department FROM role INNER JOIN department ON (department.id = role.repartment_id)`;
+  const sql = `SELECT role.id, role.title AS role, role.salary, department.name AS department FROM role INNER JOIN department ON (department.id = role.department_id);`;
   db.query(sql, (err, res) => {
     if (err) {
       console.log(err);
@@ -122,7 +121,7 @@ function addDepartment() {
           console.log(err);
           return;
         }
-        console.log(answer.department + "has been added to the database!");
+        console.log(answer.department + " has been added to the database!");
         introQuestion();
       });
     });
@@ -145,27 +144,29 @@ function addRole() {
         {
           type: "input",
           name: "salary",
-          message: "Please enter the salary of this role.",
+          message: "What is the salary role that you are adding?",
         },
         {
           type: "list",
           name: "department",
-          message: "Which department is the this role in?",
+          message:
+            "Which Department does the role that you are adding belong to?",
           choices: departmentList,
         },
       ])
       .then((answers) => {
-        const sql = `INSERT INTO role SET title= '${answers.title}, salary= ${answers.salary}, department_id= ${answers.department};`;
+        const sql = `INSERT INTO role SET title='${answers.title}', salary= ${answers.salary}, department_id= ${answers.department};`;
         db.query(sql, (err, res) => {
           if (err) {
-            console.log(answers.title + "has been added to the database!");
-            introQuestion();
+            console.log(err);
+            return;
           }
+          console.log(answers.title + " has been added to the database!");
+          introQuestion();
         });
       });
   });
 }
-
 function addAnEmployee() {
   const sql2 = `SELECT * FROM employee`;
   db.query(sql2, (error, response) => {
@@ -173,44 +174,55 @@ function addAnEmployee() {
       name: employees.first_name.concat(" ", employees.last_name),
       value: employees.id,
     }));
+
     const sql3 = `SELECT * FROM role`;
     db.query(sql3, (error, response) => {
       roleList = response.map((role) => ({
         name: role.title,
         value: role.id,
       }));
-      return inquirer.prompt([
-        {
-          type: "input",
-          name: "first",
-          message: "Please enter the employee's first name:",
-        },
-        {
-          type: "input",
-          name: "last",
-          message: "Please enter the employee's last name:",
-        },
-        {
-          type: "list",
-          name: "manager",
-          Message: "If the employee has a manager, please select who it is:",
-          choices: employeeList,
-        },
-      ]);
-    }).then((answers) => {
-      const sql = `INSERT INTO employee SET first_name='${answers.first}', last_name= '${answers.last}', role_id= ${answers.role}, manager_id=${answers.manager};`;
-      db.query(sql, (err, res) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        console.log(
-          answers.first_name +
-            answers.last_name +
-            "has been added to the database!"
-        );
-        introQuestion();
-      });
+      return inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "first",
+            message: "What is the employee's first name?",
+          },
+          {
+            type: "input",
+            name: "last",
+            message: "What is the employee's last name?",
+          },
+          {
+            type: "list",
+            name: "role",
+            message: "What is the employee's role?",
+            choices: roleList,
+          },
+          {
+            type: "list",
+            name: "manager",
+            message: "Who is the employee's manager?",
+            choices: employeeList,
+          },
+        ])
+        .then((answers) => {
+          const sql = `INSERT INTO employee SET first_name='${answers.first}', last_name= '${answers.last}', role_id= ${answers.role}, manager_id=${answers.manager};`;
+          db.query(sql, (err, res) => {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            console.log(
+              "Added " +
+                answers.first +
+                " " +
+                answers.last +
+                " to the database!"
+            );
+            introQuestion();
+          });
+        });
     });
   });
 }
@@ -245,7 +257,8 @@ function updateAnEmployeeRole() {
           {
             type: "list",
             name: "manager",
-            message: "If the employee has a manager, please select who it is:",
+            message:
+              "Please select the employee of the manager that you are adding:",
             choices: employeeList,
           },
         ])
@@ -256,8 +269,8 @@ function updateAnEmployeeRole() {
               console.log(err);
               return;
             }
-            console.log("Employee role updated");
-            startingQuestion();
+            console.log("Employee role has been updated!");
+            introQuestion();
           });
         });
     });
