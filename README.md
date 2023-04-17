@@ -41,8 +41,7 @@ There are no tests at the time
 
 ## Screenshot
 
-<img width="1002" alt="Screenshot 2023-04-16 at 11 31 32 PM" src="https://user-images.githubusercontent.com/118701306/232372236-e6a922a7-de62-4468-b3dd-96bc4aa9e7b8.png">
-
+<img width="1002" alt="Screenshot 2023-04-17 at 12 02 15 PM" src="https://user-images.githubusercontent.com/118701306/232543973-9c8a9b8c-7a55-4c3a-ae6d-b86608c2b2ac.png">
 ## Questions
 
 For questions about this project, please see my GitHub at [malachigamblin](https://github.com/malachigamblin/).
