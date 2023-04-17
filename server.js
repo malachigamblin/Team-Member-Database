@@ -60,7 +60,7 @@ function introQuestion() {
           addAnEmployee();
           break;
         case "Update an employee role":
-          updateAnEmployee();
+          updateAnEmployeeRole();
           break;
         case "Exit":
           console.log("Good-Bye!");
@@ -163,5 +163,103 @@ function addRole() {
           }
         });
       });
+  });
+}
+
+function addAnEmployee() {
+  const sql2 = `SELECT * FROM employee`;
+  db.query(sql2, (error, response) => {
+    employeeList = response.map((employees) => ({
+      name: employees.first_name.concat(" ", employees.last_name),
+      value: employees.id,
+    }));
+    const sql3 = `SELECT * FROM role`;
+    db.query(sql3, (error, response) => {
+      roleList = response.map((role) => ({
+        name: role.title,
+        value: role.id,
+      }));
+      return inquirer.prompt([
+        {
+          type: "input",
+          name: "first",
+          message: "Please enter the employee's first name:",
+        },
+        {
+          type: "input",
+          name: "last",
+          message: "Please enter the employee's last name:",
+        },
+        {
+          type: "list",
+          name: "manager",
+          Message: "If the employee has a manager, please select who it is:",
+          choices: employeeList,
+        },
+      ]);
+    }).then((answers) => {
+      const sql = `INSERT INTO employee SET first_name='${answers.first}', last_name= '${answers.last}', role_id= ${answers.role}, manager_id=${answers.manager};`;
+      db.query(sql, (err, res) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        console.log(
+          answers.first_name +
+            answers.last_name +
+            "has been added to the database!"
+        );
+        introQuestion();
+      });
+    });
+  });
+}
+
+function updateAnEmployeeRole() {
+  const sql2 = `SELECT * FROM employee`;
+  db.query(sql2, (error, response) => {
+    employeeList = response.map((employees) => ({
+      name: employees.first_name.concat(" ", employees.last_name),
+      value: employees.id,
+    }));
+    const sql3 = `SELECT * FROM role`;
+    db.query(sql3, (error, response) => {
+      roleList = response.map((role) => ({
+        name: role.title,
+        value: role.id,
+      }));
+      return inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "employee",
+            message: "Which employee's role do you want to update?",
+            choices: employeeList,
+          },
+          {
+            type: "list",
+            name: "role",
+            message: "Which role do you want to assign the selected employee?",
+            choices: roleList,
+          },
+          {
+            type: "list",
+            name: "manager",
+            message: "If the employee has a manager, please select who it is:",
+            choices: employeeList,
+          },
+        ])
+        .then((answers) => {
+          const sql = `UPDATE employee SET role_id= ${answers.role}, manager_id=${answers.manager} WHERE id =${answers.employee};`;
+          db.query(sql, (err, res) => {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            console.log("Employee role updated");
+            startingQuestion();
+          });
+        });
+    });
   });
 }
