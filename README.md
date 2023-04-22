@@ -14,7 +14,7 @@
 
 ## Description
 
-This project helps any buisness manage their employee database.
+This project helps any business manage their employee database.
 
 ## Installation
 
@@ -33,7 +33,7 @@ After installation is complete, input "npm start" and manage your database!
 
 ## Contribute
 
-Ther are no guidlines for contributing at this time.
+There are no guidelines for contributing at this time.
 
 ## Tests
 
